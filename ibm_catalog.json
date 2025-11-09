@@ -1,0 +1,280 @@
+{
+  "products": [
+    {
+      "label": "Landing zone for cloud-native AI applications",
+      "name": "Landing_zone_for_cloud_native_AI_applications",
+      "product_kind": "solution",
+      "tags": [
+        "solution",
+        "watson",
+        "security",
+        "banking",
+        "ibm_created",
+        "target_terraform",
+        "terraform",
+        "converged_infra",
+        "platform_engineering"
+      ],
+      "keywords": [
+        "rag",
+        "watson",
+        "ai",
+        "compliance",
+        "fscloud",
+        "genai",
+        "sample",
+        "ibmcloud",
+        "financial services",
+        "watsonx",
+        "llm",
+        "retrieval augmented generation",
+        "secure",
+        "secret manager",
+        "key protect",
+        "security and compliance center workload protection",
+        "cspm",
+        "config aggregator",
+        "app config",
+        "IaC",
+        "infrastructure as code",
+        "terraform",
+        "solution"
+      ],
+      "short_description": "Provision a secure, scalable AI deployment with supporting IBM Cloud and watsonx services to embed enterprise knowledge into generative AI workflows.",
+      "long_description": "Utilize data from your enterprise to achieve productivity gains in activities related to question/answer conversations, content search, summarization and generation. Retrieval Augmented Generation (RAG) based solutions can be deployed in multiple configurations and is applicable to various industry use cases.\n\nThis deployable architecture provides a quick provisioning of AI services on IBM Cloud which can be leveraged to deploy [RAG](https://cloud.ibm.com/docs/pattern-genai-rag?topic=pattern-genai-rag-genai-pattern) based AI applications. \n\nKey capabilities include:\n- Deploying a suite of watsonx services to provide generative AI RAG capabilities\n- Deploying the databases for Elasticsearch for storing vector embeddings of the documents and content search/retrieval\n- Provision Code Engine for deployment of generative AI applications on IBM Cloud.\n\nThe configurations are flexible and be changed to meet the needs for several types of RAG patterns depending on the chosen combination of technologies and services.\n\nThe generative AI RAG pattern services include:\n- [watsonx.ai](https://dataplatform.cloud.ibm.com/docs/content/wsj/getting-started/welcome-main.html?context=wx)\n- [watsonx Assistant](https://cloud.ibm.com/docs/watson-assistant?topic=watson-assistant-welcome-new-assistant)\n- [Watson Discovery](https://cloud.ibm.com/docs/discovery-data)\n- [Elasticsearch](https://cloud.ibm.com/docs/databases-for-elasticsearch) Enterprise and Platinum edition\n\nThe supporting services include:\n- [Secrets Manager](https://cloud.ibm.com/docs/secrets-manager)\n- [Key Protect](https://cloud.ibm.com/docs/key-protect)\n- [Object Storage](https://cloud.ibm.com/docs/cloud-object-storage?topic=cloud-object-storage-getting-started-cloud-object-storage)\n\nBy leveraging this architecture, you can accelerate your deployment and tailor it to meet your unique business needs and enterprise goals.",
+      "offering_docs_url": "https://github.com/terraform-ibm-modules/terraform-ibm-cloud-native-ai/blob/main/README.md",
+      "offering_icon_url": "https://globalcatalog.cloud.ibm.com/api/v1/1082e7d2-5e2f-0a11-a3bc-f88a8e1931fc/artifacts/solution.svg",
+      "provider_name": "IBM",
+      "features": [
+        {
+          "title": "Rapid AI Deployment",
+          "description": "Provision a suite of IBM Cloud-native AI and data services to accelerate development and deployment of cloud-native AI applications."
+        },
+        {
+          "title": "Foundation Model Integration",
+          "description": "Utilize watsonx.ai for training and inference of foundation models, enabling scalable and customizable generative AI capabilities."
+        },
+        {
+          "title": "Conversational AI Enablement",
+          "description": "Integrate watsonx Assistant to build intelligent conversational interfaces for enterprise-grade applications."
+        },
+        {
+          "title": "Intelligent Document Understanding",
+          "description": "Leverage watson Discovery and Elasticsearch to enable semantic document retrieval and contextual understanding."
+        },
+        {
+          "title": "Secure Data Storage",
+          "description": "Use IBM Cloud Object Storage (COS) for persistent storage of model artifacts, application data, and logs."
+        },
+        {
+          "title": "Encryption and Key Management",
+          "description": "Ensure secure handling of sensitive data and encryption keys using IBM Key Management Services (KMS)."
+        },
+        {
+          "title": "Provision Runtime Environment",
+          "description": "Provision IBM Code Engine to manage and scale containerized workloads for AI applications."
+        },
+        {
+          "title": "Provision Elasticsearch for Intelligent Search",
+          "description": "Deploy IBM Cloud Databases for Elasticsearch to enable fast, scalable, and semantic document retrieval, supporting intelligent search capabilities across AI applications."
+        }
+      ],
+      "support_details": "This product is in the community registry, support is handled through the [original repo](https://github.com/terraform-ibm-modules/terraform-ibm-cloud-native-ai). If you experience issues kindly open an issue [here](https://github.com/terraform-ibm-modules/terraform-ibm-cloud-native-ai/issues). Please note that this product is not currently supported through the IBM Cloud Support Center.",
+      "flavors": [
+        {
+          "label": "QuickStart",
+          "name": "quickstart",
+          "index": 1,
+          "install_type": "fullstack",
+          "working_directory": "solutions/quickstart",
+          "iam_permissions": [
+            {
+              "service_name": "Resource group only",
+              "role_crns": [
+                "crn:v1:bluemix:public:iam::::role:Viewer"
+              ],
+              "notes": "Viewer access is required in the resource group you want to provision in."
+            },
+            {
+              "service_name": "cloud-object-storage",
+              "role_crns": [
+                "crn:v1:bluemix:public:iam::::serviceRole:Manager",
+                "crn:v1:bluemix:public:iam::::role:Editor"
+              ],
+              "notes": "Required to manage Object Storage for the watsonx.ai."
+            },
+            {
+              "service_name": "kms",
+              "role_crns": [
+                "crn:v1:bluemix:public:iam::::serviceRole:Manager",
+                "crn:v1:bluemix:public:iam::::role:Editor"
+              ],
+              "notes": "Required as Key Protect is used for encryption."
+            },
+            {
+              "service_name": "data-science-experience",
+              "role_crns": [
+                "crn:v1:bluemix:public:iam::::role:Editor"
+              ],
+              "notes": "Required to create an instance of watsonx.ai Studio."
+            },
+            {
+              "service_name": "pm-20",
+              "role_crns": [
+                "crn:v1:bluemix:public:iam::::role:Editor"
+              ],
+              "notes": "Required to create an instance of watsonx.ai Runtime."
+            },
+            {
+              "service_name": "discovery",
+              "role_crns": [
+                "crn:v1:bluemix:public:iam::::role:Editor"
+              ],
+              "notes": "Required to create an instance of Watson Discovery."
+            },
+            {
+              "service_name": "conversation",
+              "role_crns": [
+                "crn:v1:bluemix:public:iam::::role:Editor"
+              ],
+              "notes": "Required to create an instance of watsonx Assistant."
+            },
+            {
+              "service_name": "databases-for-elasticsearch",
+              "role_crns": [
+                "crn:v1:bluemix:public:iam::::role:Editor"
+              ],
+              "notes": "Required to create the Databases for Elasticsearch instance."
+            },
+            {
+              "service_name": "container-registry",
+              "role_crns": [
+                "crn:v1:bluemix:public:iam::::serviceRole:Manager"
+              ],
+              "notes": "Required to manage namespaces, repositories, and access policies in Container Registry."
+            },
+            {
+              "service_name": "codeengine",
+              "role_crns": [
+                "crn:v1:bluemix:public:iam::::serviceRole:Writer",
+                "crn:v1:bluemix:public:iam::::role:Editor"
+              ],
+              "notes": "Required to create Code Engine instance."
+            }
+          ],
+          "architecture": {
+            "features": [
+              {
+                "title": " ",
+                "description": "Ideal for users new to IBM Cloud or watsonx.ai who want to get started without configuring underlying infrastructure."
+              },
+              {
+                "title": " ",
+                "description": "Quickly provisions watsonx.ai, watsonx Assistant, watson Discovery, Elasticsearch, Object Storage, Key Management Services and Code Engine. Includes all necessary services to deploy a sample Retrieval-Augmented Generation (RAG) application leveraging Code Engine."
+              }
+            ],
+            "diagrams": [
+              {
+                "diagram": {
+                  "caption": "Landing zone for cloud-native AI applications - QuickStart",
+                  "url": "https://raw.githubusercontent.com/terraform-ibm-modules/terraform-ibm-cloud-native-ai/main/reference-architectures/deployable-architecture-cn-ai-qs.svg",
+                  "type": "image/svg+xml"
+                },
+                "description": "This deployable architecture provisions a suite of AI and data services on IBM Cloud to support rapid development and deployment of Landing zone for cloud-native AI applications. It includes <b>watsonx.ai</b> for foundation model training and inference, <b>watsonx Assistant</b> for conversational AI, <b>watson Discovery</b> for intelligent document understanding, and <b>IBM Cloud Databases for Elasticsearch</b>. The solution also provisions <b>IBM Cloud Object Storage (COS)</b> for persistent storage of model artifacts, application data, and logs, and <b>Key Management Services (KMS)</b> to ensure secure handling of sensitive information and encryption keys across services. Once the foundational services are provisioned, a sample <b>Retrieval-Augmented Generation (RAG)</b> application can be deployed to demonstrate how enterprise-grade AI solutions can be built using IBM Cloud-native services. The application leverages `watsonx.ai` for generative responses, Elasticsearch for document retrieval, and Code Engine to orchestrate the runtime environment."
+              }
+            ]
+          },
+          "configuration": [
+            {
+              "key": "prefix",
+              "required": true,
+              "default_value": "dev",
+              "random_string": {
+                "length": 4
+              },
+              "value_constraints": [
+                {
+                  "type": "regex",
+                  "description": "Prefix must begin with a lowercase letter and may contain only lowercase letters, digits, and hyphens '-'. It must not end with a hyphen('-'), and cannot contain consecutive hyphens ('--'). It should not exceed 16 characters.",
+                  "value": "^$|^__NULL__$|^[a-z](?!.*--)(?:[a-z0-9-]{0,14}[a-z0-9])?$"
+                }
+              ]
+            },
+            {
+              "key": "existing_resource_group_name",
+              "display_name": "resource_group",
+              "custom_config": {
+                "type": "resource_group",
+                "grouping": "deployment",
+                "original_grouping": "deployment",
+                "config_constraints": {
+                  "identifier": "rg_name"
+                }
+              }
+            },
+            {
+              "key": "ibmcloud_api_key"
+            },
+            {
+              "key": "region",
+              "required": true,
+              "options": [
+                {
+                  "displayname": "Dallas (us-south)",
+                  "value": "us-south"
+                },
+                {
+                  "displayname": "Sydney (au-syd)",
+                  "value": "au-syd"
+                },
+                {
+                  "displayname": "Frankfurt (eu-de)",
+                  "value": "eu-de"
+                },
+                {
+                  "displayname": "London (eu-gb)",
+                  "value": "eu-gb"
+                },
+                {
+                  "displayname": "Tokyo (jp-tok)",
+                  "value": "jp-tok"
+                }
+              ]
+            },
+            {
+              "key": "provider_visibility",
+              "options": [
+                {
+                  "displayname": "private",
+                  "value": "private"
+                },
+                {
+                  "displayname": "public",
+                  "value": "public"
+                },
+                {
+                  "displayname": "public-and-private",
+                  "value": "public-and-private"
+                }
+              ],
+              "hidden": true
+            },
+            {
+              "key": "resource_tags",
+              "custom_config": {
+                "type": "array",
+                "grouping": "deployment",
+                "original_grouping": "deployment",
+                "config_constraints": {
+                  "type": "string"
+                }
+              }
+            }
+          ],
+          "dependency_version_2": true,
+          "terraform_version": "1.12.2"
+        }
+      ]
+    }
+  ]
+}
