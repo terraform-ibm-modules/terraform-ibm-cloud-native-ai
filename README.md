@@ -20,7 +20,11 @@ For information, see "Module names and descriptions" at
 https://terraform-ibm-modules.github.io/documentation/#/implementation-guidelines?id=module-names-and-descriptions
 -->
 
-IBM Cloud Native AI module provides quick provisioning of resources required to develop AI services.
+The IBM Cloud Native AI Module streamlines the provisioning of essential AI and data services on IBM Cloud, enabling rapid development and deployment of enterprise-grade AI applications. It automates the setup of foundational components such as watsonx.ai for generative AI, Watson Discovery and Elasticsearch for intelligent search, and Code Engine for scalable runtime orchestration.
+
+This module also provisions secure storage with IBM Cloud Object Storage, and integrates Key Protect and Secrets Manager for encryption key and secret management. Observability and compliance are built-in through Monitoring, Logs, and Security and Compliance Center.
+
+By leveraging this module, clients can quickly establish a secure, scalable, and compliant AI landing zone tailored for Retrieval-Augmented Generation (RAG) and other advanced AI patterns
 
 
 <!-- The following content is automatically populated by the pre-commit hook -->
@@ -34,74 +38,39 @@ IBM Cloud Native AI module provides quick provisioning of resources required to 
 <!-- Replace this heading with the name of the root level module (the repo name) -->
 ## terraform-ibm-cloud-native-ai
 
-### Usage
-
-<!--
-Add an example of the use of the module in the following code block.
-
-Use real values instead of "var.<var_name>" or other placeholder values
-unless real values don't help users know what to change.
--->
-
-```hcl
-terraform {
-  required_version = ">= 1.9.0"
-  required_providers {
-    ibm = {
-      source  = "IBM-Cloud/ibm"
-      version = "X.Y.Z"  # Lock into a provider version that satisfies the module constraints
-    }
-  }
-}
-
-locals {
-    region = "us-south"
-}
-
-provider "ibm" {
-  ibmcloud_api_key = "XXXXXXXXXX"  # replace with apikey value
-  region           = local.region
-}
-
-module "module_template" {
-  source            = "terraform-ibm-modules/<replace>/ibm"
-  version           = "X.Y.Z" # Replace "X.Y.Z" with a release version to lock into a specific release
-  region            = local.region
-  name              = "instance-name"
-  resource_group_id = "xxXXxxXXxXxXXXXxxXxxxXXXXxXXXXX" # Replace with the actual ID of resource group to use
-}
-```
-
 ### Required access policies
 
-<!-- PERMISSIONS REQUIRED TO RUN MODULE
-If this module requires permissions, uncomment the following block and update
-the sample permissions, following the format.
-Replace the 'Sample IBM Cloud' service and roles with applicable values.
-The required information can usually be found in the services official
-IBM Cloud documentation.
-To view all available service permissions, you can go in the
-console at Manage > Access (IAM) > Access groups and click into an existing group
-(or create a new one) and in the 'Access' tab click 'Assign access'.
--->
-
-<!--
 You need the following permissions to run this module:
 
-- Service
-    - **Resource group only**
+- Account Management
+    - **Resource group**
         - `Viewer` access on the specific resource group
-    - **Sample IBM Cloud** service
+- IAM services
+    - **watsonx.ai Runtime** service
+        - `Editor` platform access
+    - **watsonx.ai Studio** service
+        - `Editor` platform access
+    - **Watson Discovery** service
+        - `Editor` platform access
+    - **watsonx Assistant** service
+        - `Editor` platform access
+    - **Database for Elasticsearch** service
+        - `Editor` platform access
+    - **Container Registry** service
+        - `Manager` service access
+    - **Code Engine** service
+        - `Editor` platform access
+        - `Writer` service access
+    - **Cloud Object Storage** service
         - `Editor` platform access
         - `Manager` service access
--->
+    - **Key Protect** service
+        - `Editor` platform access
+        - `Manager` service access
 
-<!-- NO PERMISSIONS FOR MODULE
-If no permissions are required for the module, uncomment the following
-statement instead the previous block.
--->
+> Note: If you are not the IBM Cloud account owner, then the addition of the policy `All Account Management Services` with role `Administrator` is required for storage delegation. To add the required access, go to:
+`IBM Cloud -> Manage -> Access (IAM) -> Users -> {USER} -> Access -> Access Policies`
 
-<!-- No permissions are needed to run this module.-->
 
 
 <!-- The following content is automatically populated by the pre-commit hook -->
