@@ -115,6 +115,22 @@ output "watsonx_data" {
 }
 
 ########################################################################################################################
+# watsonx.data
+########################################################################################################################
+
+output "watsonx_orchestrate" {
+  description = "Connection and configuration details for the watsonx Orchestrate instance."
+  value = {
+    "crn"           = module.watsonx_orchestrate.crn
+    "account_id"    = module.watsonx_orchestrate.account_id
+    "guid"          = module.watsonx_orchestrate.guid
+    "name"          = module.watsonx_orchestrate.name
+    "plan_id"       = module.watsonx_orchestrate.plan_id
+    "dashboard_url" = module.watsonx_orchestrate.dashboard_url
+  }
+}
+
+########################################################################################################################
 # ICD - ElasticSearch
 ########################################################################################################################
 

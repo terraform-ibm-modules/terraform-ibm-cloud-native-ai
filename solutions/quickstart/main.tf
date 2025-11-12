@@ -21,12 +21,13 @@ locals {
 
   # Watson
   watson_plan = {
-    "studio"     = "professional-v1",
-    "runtime"    = "v2-professional",
-    "discovery"  = "plus",
-    "assistant"  = "enterprise",
-    "governance" = "essentials",
-    "data"       = "lakehouse-enterprise"
+    "studio"      = "professional-v1",
+    "runtime"     = "v2-professional",
+    "discovery"   = "plus",
+    "assistant"   = "enterprise",
+    "governance"  = "essentials",
+    "data"        = "lakehouse-enterprise",
+    "orchestrate" = "essentials-agentic-mau"
   }
 
 }
@@ -163,6 +164,20 @@ module "watsonx_data" {
   enable_kms_encryption         = true
   skip_iam_authorization_policy = false
   watsonx_data_kms_key_crn      = module.key_protect_all_inclusive.keys["${local.key_ring_name}.${local.key_name}"].crn
+}
+
+##############################################################################################################
+# watsonx Orchestrate
+##############################################################################################################
+
+module "watsonx_orchestrate" {
+  source                   = "terraform-ibm-modules/watsonx-orchestrate/ibm"
+  version                  = "1.11.6"
+  region                   = var.region
+  resource_group_id        = module.resource_group.resource_group_id
+  watsonx_orchestrate_name = "${local.prefix}orchestrate"
+  plan                     = local.watson_plan["orchestrate"]
+  resource_tags            = var.resource_tags
 }
 
 ##############################################################################################################

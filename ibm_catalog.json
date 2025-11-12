@@ -56,7 +56,7 @@
         },
         {
           "title": "Conversational AI Enablement",
-          "description": "Integrate watsonx Assistant to build intelligent conversational interfaces for enterprise-grade applications."
+          "description": "Integrate watsonx Assistant or watsonx Orchestrate to build intelligent conversational interfaces for enterprise-grade applications."
         },
         {
           "title": "Intelligent Document Understanding",
@@ -160,6 +160,13 @@
                 "crn:v1:bluemix:public:iam::::role:Editor"
               ],
               "notes": "Required to create an instance of watsonx.data"
+            },
+            {
+              "service_name": "watsonx-orchestrate",
+              "role_crns": [
+                "crn:v1:bluemix:public:iam::::role:Editor"
+              ],
+              "notes": "Required to create an instance of watsonx Orchestrate."
             },
             {
               "service_name": "databases-for-elasticsearch",
