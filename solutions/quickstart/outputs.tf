@@ -83,6 +83,38 @@ output "watsonx_assistant" {
 }
 
 ########################################################################################################################
+# watsonx.governance
+########################################################################################################################
+
+output "watsonx_governance" {
+  description = "Connection and configuration details for the watsonx.governance instance."
+  value = {
+    "crn"           = module.watsonx_governance.crn
+    "account_id"    = module.watsonx_governance.account_id
+    "guid"          = module.watsonx_governance.guid
+    "name"          = module.watsonx_governance.name
+    "plan_id"       = module.watsonx_governance.plan_id
+    "dashboard_url" = module.watsonx_governance.dashboard_url
+  }
+}
+
+########################################################################################################################
+# watsonx.data
+########################################################################################################################
+
+output "watsonx_data" {
+  description = "Connection and configuration details for the watsonx.data instance."
+  value = {
+    "crn"           = module.watsonx_data.crn
+    "account_id"    = module.watsonx_data.account_id
+    "guid"          = module.watsonx_data.guid
+    "name"          = module.watsonx_data.name
+    "plan_id"       = module.watsonx_data.plan_id
+    "dashboard_url" = module.watsonx_data.dashboard_url
+  }
+}
+
+########################################################################################################################
 # ICD - ElasticSearch
 ########################################################################################################################
 

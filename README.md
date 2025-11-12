@@ -20,7 +20,7 @@ For information, see "Module names and descriptions" at
 https://terraform-ibm-modules.github.io/documentation/#/implementation-guidelines?id=module-names-and-descriptions
 -->
 
-The IBM Cloud Native AI Module streamlines the provisioning of essential AI and data services on IBM Cloud, enabling rapid development and deployment of enterprise-grade AI applications. It automates the setup of foundational components such as watsonx.ai for generative AI, Watson Discovery and Elasticsearch for intelligent search, and Code Engine for scalable runtime orchestration.
+The IBM Cloud Native AI Module streamlines the provisioning of essential AI and data services on IBM Cloud, enabling rapid development and deployment of enterprise-grade AI applications. It automates the setup of foundational components such as watsonx.ai for generative AI, Watson Discovery and Elasticsearch for intelligent search, watsonx.data to support open data formats and machine learning libraries for AI workloads, watsonx.governance to automate and accelerate responsible AI workflows and Code Engine for scalable runtime orchestration.
 
 This module also provisions secure storage with IBM Cloud Object Storage, and integrates Key Protect and Secrets Manager for encryption key and secret management. Observability and compliance are built-in through Monitoring, Logs, and Security and Compliance Center.
 
@@ -53,6 +53,10 @@ You need the following permissions to run this module:
     - **Watson Discovery** service
         - `Editor` platform access
     - **watsonx Assistant** service
+        - `Editor` platform access
+    - **watsonx.governance** service
+        - `Editor` platform access
+    - **watsonx.data** service
         - `Editor` platform access
     - **Database for Elasticsearch** service
         - `Editor` platform access

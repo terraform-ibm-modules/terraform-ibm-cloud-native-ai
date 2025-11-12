@@ -21,10 +21,12 @@ locals {
 
   # Watson
   watson_plan = {
-    "studio"    = "professional-v1",
-    "runtime"   = "v2-professional",
-    "discovery" = "plus",
-    "assistant" = "enterprise"
+    "studio"     = "professional-v1",
+    "runtime"    = "v2-professional",
+    "discovery"  = "plus",
+    "assistant"  = "enterprise",
+    "governance" = "essentials",
+    "data"       = "lakehouse-enterprise"
   }
 
 }
@@ -129,6 +131,38 @@ module "watsonx_assistant" {
   plan                   = local.watson_plan["assistant"]
   watsonx_assistant_name = "${local.prefix}assistant"
   service_endpoints      = local.service_endpoints
+}
+
+##############################################################################################################
+# watsonx.governance
+##############################################################################################################
+
+module "watsonx_governance" {
+  source                  = "terraform-ibm-modules/watsonx-governance/ibm"
+  version                 = "1.11.6"
+  region                  = var.region
+  resource_group_id       = module.resource_group.resource_group_id
+  plan                    = local.watson_plan["governance"]
+  watsonx_governance_name = "${local.prefix}governance"
+  resource_tags           = var.resource_tags
+}
+
+##############################################################################################################
+# watsonx.data
+##############################################################################################################
+
+module "watsonx_data" {
+  source                        = "terraform-ibm-modules/watsonx-data/ibm"
+  version                       = "1.12.7"
+  region                        = var.region
+  resource_group_id             = module.resource_group.resource_group_id
+  watsonx_data_name             = "${local.prefix}data"
+  plan                          = local.watson_plan["data"]
+  use_case                      = "workloads"
+  resource_tags                 = var.resource_tags
+  enable_kms_encryption         = true
+  skip_iam_authorization_policy = false
+  watsonx_data_kms_key_crn      = module.key_protect_all_inclusive.keys["${local.key_ring_name}.${local.key_name}"].crn
 }
 
 ##############################################################################################################

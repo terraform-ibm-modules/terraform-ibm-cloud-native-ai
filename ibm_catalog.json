@@ -63,6 +63,14 @@
           "description": "Leverage watson Discovery and Elasticsearch to enable semantic document retrieval and contextual understanding."
         },
         {
+          "title": "Automate and accelerate responsible AI workflows",
+          "description": "watsonx.governance seamlessly integrate with your existing systems to help save time, reduce costs, and comply with regulations."
+        },
+        {
+          "title": "Open data formats and machine learning libraries for AI workloads",
+          "description": "With IBM watsonx.data, you can manage and analyze all of your enterprise data, regardless of format, in a unified platform."
+        },
+        {
           "title": "Secure Data Storage",
           "description": "Use IBM Cloud Object Storage (COS) for persistent storage of model artifacts, application data, and logs."
         },
@@ -140,6 +148,20 @@
               "notes": "Required to create an instance of watsonx Assistant."
             },
             {
+              "service_name": "aiopenscale",
+              "role_crns": [
+                "crn:v1:bluemix:public:iam::::role:Editor"
+              ],
+              "notes": "Required to create an instance of watsonx.governance."
+            },
+            {
+              "service_name": "lakehouse",
+              "role_crns": [
+                "crn:v1:bluemix:public:iam::::role:Editor"
+              ],
+              "notes": "Required to create an instance of watsonx.data"
+            },
+            {
               "service_name": "databases-for-elasticsearch",
               "role_crns": [
                 "crn:v1:bluemix:public:iam::::role:Editor"
@@ -170,7 +192,7 @@
               },
               {
                 "title": " ",
-                "description": "Quickly provisions watsonx.ai, watsonx Assistant, watson Discovery, Elasticsearch, Object Storage, Key Management Services and Code Engine. Includes all necessary services to deploy a sample Retrieval-Augmented Generation (RAG) application leveraging Code Engine."
+                "description": "Quickly provisions watsonx.ai, watsonx Assistant, watson Discovery, watsonx.data, watsonx.governance, Elasticsearch, Object Storage, Key Management Services and Code Engine. Includes all necessary services to deploy a sample Retrieval-Augmented Generation (RAG) application leveraging Code Engine."
               }
             ],
             "diagrams": [
@@ -180,7 +202,7 @@
                   "url": "https://raw.githubusercontent.com/terraform-ibm-modules/terraform-ibm-cloud-native-ai/main/reference-architectures/deployable-architecture-cn-ai-qs.svg",
                   "type": "image/svg+xml"
                 },
-                "description": "This deployable architecture provisions a suite of AI and data services on IBM Cloud to support rapid development and deployment of Landing zone for cloud-native AI applications. It includes <b>watsonx.ai</b> for foundation model training and inference, <b>watsonx Assistant</b> for conversational AI, <b>watson Discovery</b> for intelligent document understanding, and <b>IBM Cloud Databases for Elasticsearch</b>. The solution also provisions <b>IBM Cloud Object Storage (COS)</b> for persistent storage of model artifacts, application data, and logs, and <b>Key Management Services (KMS)</b> to ensure secure handling of sensitive information and encryption keys across services. Once the foundational services are provisioned, a sample <b>Retrieval-Augmented Generation (RAG)</b> application can be deployed to demonstrate how enterprise-grade AI solutions can be built using IBM Cloud-native services. The application leverages `watsonx.ai` for generative responses, Elasticsearch for document retrieval, and Code Engine to orchestrate the runtime environment."
+                "description": "This deployable architecture provisions a suite of AI and data services on IBM Cloud to support rapid development and deployment of Landing zone for cloud-native AI applications. It includes <b>watsonx.ai</b> for foundation model training and inference, <b>watsonx Assistant</b> for conversational AI, <b>watson Discovery</b> for intelligent document understanding, <b>watsonx.data</b> to support enterprise-grade requirements by using additional services, <b>watsonx.governance</b> to analyze your AI with trust and transparency and <b>IBM Cloud Databases for Elasticsearch</b>. The solution also provisions <b>IBM Cloud Object Storage (COS)</b> for persistent storage of model artifacts, application data, and logs, and <b>Key Management Services (KMS)</b> to ensure secure handling of sensitive information and encryption keys across services. Once the foundational services are provisioned, a sample <b>Retrieval-Augmented Generation (RAG)</b> application can be deployed to demonstrate how enterprise-grade AI solutions can be built using IBM Cloud-native services. The application leverages `watsonx.ai` for generative responses, Elasticsearch for document retrieval, and Code Engine to orchestrate the runtime environment."
               }
             ]
           },
@@ -188,7 +210,7 @@
             {
               "key": "prefix",
               "required": true,
-              "default_value": "dev",
+              "default_value": "cnai",
               "random_string": {
                 "length": 4
               },
