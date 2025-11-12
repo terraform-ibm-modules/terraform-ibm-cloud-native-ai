@@ -8,8 +8,9 @@ locals {
   service_endpoints = "public-and-private"
 
   # KMS
-  key_ring_name = "${local.prefix}keyring"
-  key_name      = "${local.prefix}key"
+  key_ring_name    = "${local.prefix}keyring"
+  key_name         = "${local.prefix}key"
+  wx_data_key_name = "${local.prefix}wxd-key"
 
   # ICD Elastic Search
   es_credentials = {
@@ -61,7 +62,7 @@ module "cos" {
 
 module "key_protect_all_inclusive" {
   source                    = "terraform-ibm-modules/kms-all-inclusive/ibm"
-  version                   = "5.4.5"
+  version                   = "5.5.0"
   resource_group_id         = module.resource_group.resource_group_id
   region                    = var.region
   key_protect_instance_name = "${local.prefix}kp"
@@ -72,6 +73,10 @@ module "key_protect_all_inclusive" {
       keys = [
         {
           key_name     = local.key_name
+          force_delete = true
+        },
+        {
+          key_name     = local.wx_data_key_name
           force_delete = true
         }
       ]
@@ -163,7 +168,7 @@ module "watsonx_data" {
   resource_tags                 = var.resource_tags
   enable_kms_encryption         = true
   skip_iam_authorization_policy = false
-  watsonx_data_kms_key_crn      = module.key_protect_all_inclusive.keys["${local.key_ring_name}.${local.key_name}"].crn
+  watsonx_data_kms_key_crn      = module.key_protect_all_inclusive.keys["${local.key_ring_name}.${local.wx_data_key_name}"].crn
 }
 
 ##############################################################################################################
