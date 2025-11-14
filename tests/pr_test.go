@@ -25,11 +25,12 @@ var validQsRegions = []string{
 	"eu-de",
 	"eu-gb",
 	"jp-tok",
-	"au-syd",
 
 	// Ignoring below regions as not supported for watsonx Assistant and watson Discovery
 	// "ca-tor",
 	// "us-east"
+	// In watsonx-data - the plan region combination requires no KMS, hence commenting au-syd region too.
+	// "au-syd",
 }
 
 func TestMain(m *testing.M) {

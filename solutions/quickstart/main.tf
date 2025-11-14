@@ -92,7 +92,7 @@ data "ibm_iam_auth_token" "restapi" {}
 
 module "watsonx_ai" {
   source            = "terraform-ibm-modules/watsonx-ai/ibm"
-  version           = "2.9.1"
+  version           = "2.10.1"
   region            = var.region
   resource_group_id = module.resource_group.resource_group_id
   resource_tags     = var.resource_tags
@@ -196,7 +196,7 @@ module "icd_elasticsearch" {
   name                     = "${local.prefix}data-store"
   region                   = var.region
   plan                     = "enterprise"
-  elasticsearch_version    = "8.19"
+  elasticsearch_version    = "8.15"
   tags                     = var.resource_tags
   service_endpoints        = "private"
   member_host_flavor       = "multitenant"
@@ -289,7 +289,8 @@ locals {
 
 module "code_engine" {
   source            = "terraform-ibm-modules/code-engine/ibm"
-  version           = "4.6.10"
+  version           = "4.6.11"
+  ibmcloud_api_key  = var.ibmcloud_api_key
   resource_group_id = module.resource_group.resource_group_id
   project_name      = "${local.prefix}project"
   secrets           = local.ce_secrets
@@ -299,31 +300,21 @@ module "code_engine" {
       output_image  = local.output_image
       output_secret = "${local.prefix}registry-secret"
       source_url    = local.source_url
-      strategy_type = "dockerfile"
+      region        = var.region
+      strategy_type = local.strategy
     }
   }
-
-  # apps = {
-  #   local.ce_app_name = {
-  #     image_reference         = ""
-  #     image_secret            = "${local.prefix}registry-secret"
-  #     run_env_variables       = local.env_vars
-  #     scale_min_instances     = 1
-  #     scale_max_instances     = 3
-  #     managed_domain_mappings = "local_public"
-  #   }
-  # }
 }
 
 module "code_engine_app" {
   # Added dependency on Code Engine as the Image is required for the application.
   depends_on        = [module.code_engine]
   source            = "terraform-ibm-modules/code-engine/ibm//modules/app"
-  version           = "4.6.4"
+  version           = "4.6.11"
   project_id        = module.code_engine.project_id
   name              = local.ce_app_name
-  image_reference   = module.code_engine.build["output_image"]
-  image_secret      = module.code_engine.secret["name"]
+  image_reference   = module.code_engine.build["${local.prefix}ce-build"].output_image
+  image_secret      = module.code_engine.secret["${local.prefix}registry-secret"].name
   run_env_variables = local.env_vars
 }
 
