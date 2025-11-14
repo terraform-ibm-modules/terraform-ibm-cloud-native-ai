@@ -166,7 +166,7 @@ output "icr_namespace_crn" {
 output "code_engine" {
   description = "Code Engine output."
   value = {
-    "project_id"   = module.code_engine_project.id
+    "project_id"   = module.code_engine.project_id
     "app_url"      = module.code_engine_app.endpoint
     "output_image" = local.output_image
   }

@@ -196,7 +196,7 @@ module "icd_elasticsearch" {
   name                     = "${local.prefix}data-store"
   region                   = var.region
   plan                     = "enterprise"
-  elasticsearch_version    = "8.12"
+  elasticsearch_version    = "8.19"
   tags                     = var.resource_tags
   service_endpoints        = "private"
   member_host_flavor       = "multitenant"
@@ -215,16 +215,27 @@ module "icr_namespace" {
   namespace_name    = "${local.prefix}namespace"
 }
 
+module "cr_endpoint" {
+  source  = "terraform-ibm-modules/container-registry/ibm//modules/endpoint"
+  version = "2.3.5"
+  region  = var.region
+}
+
 ##############################################################################################################
 # Code Engine - Project, Secret, Build, Application
 ##############################################################################################################
 
 locals {
-  env_vars = [
+  env_vars = [{
+    type      = "secret_key_reference"
+    name      = "WATSONX_AI_APIKEY"
+    key       = "WATSONX_AI_APIKEY"
+    reference = "wx-ai"
+    },
     {
       type  = "literal"
-      name  = "WATSONX_AI_APIKEY"
-      value = var.ibmcloud_api_key
+      name  = "WATSONX_SERVICE_URL"
+      value = "https://${var.region}.ml.cloud.ibm.com"
     },
     {
       type  = "literal"
@@ -247,74 +258,74 @@ locals {
       value = "true"
     }
   ]
-  cr_region    = split("-", var.region)[0]
-  output_image = "private.${local.cr_region}.icr.io/${module.icr_namespace.namespace_name}/ai-agent-for-loan-risk"
+
+  ce_secrets = merge(
+    {
+      # Secret for Watsonx
+      "wx-ai" = {
+        format = "generic"
+        data = {
+          "WATSONX_AI_APIKEY" = var.ibmcloud_api_key
+        }
+      }
+    },
+    # Secret for Container Registry
+    {
+      "${local.prefix}registry-secret" = {
+        format = "registry"
+        data = {
+          username = "iamapikey"
+          password = var.ibmcloud_api_key
+          server   = module.cr_endpoint.container_registry_endpoint_private
+        }
+      }
+    }
+  )
+  source_url   = "https://github.com/IBM/ai-agent-for-loan-risk"
+  output_image = "${module.cr_endpoint.container_registry_endpoint_private}/${module.icr_namespace.namespace_name}/ai-agent-for-loan-risk"
   strategy     = "dockerfile"
   ce_app_name  = "ai-agent-for-loan-risk"
 }
 
-##############################################################################
-# Code Engine Project
-##############################################################################
-module "code_engine_project" {
-  source            = "terraform-ibm-modules/code-engine/ibm//modules/project"
-  version           = "4.6.4"
-  name              = "${local.prefix}project"
+module "code_engine" {
+  source            = "terraform-ibm-modules/code-engine/ibm"
+  version           = "4.6.10"
   resource_group_id = module.resource_group.resource_group_id
-}
+  project_name      = "${local.prefix}project"
+  secrets           = local.ce_secrets
 
-##############################################################################
-# Code Engine Secret
-##############################################################################
-module "code_engine_secret" {
-  source     = "terraform-ibm-modules/code-engine/ibm//modules/secret"
-  version    = "4.6.4"
-  name       = "${local.prefix}registry-secret"
-  project_id = module.code_engine_project.id
-  format     = "registry"
-  data = {
-    "server"   = "private.${local.cr_region}.icr.io",
-    "username" = "iamapikey",
-    "password" = var.ibmcloud_api_key,
+  builds = {
+    "${local.prefix}ce-build" = {
+      output_image  = local.output_image
+      output_secret = "${local.prefix}registry-secret"
+      source_url    = local.source_url
+      strategy_type = "dockerfile"
+    }
   }
+
+  # apps = {
+  #   local.ce_app_name = {
+  #     image_reference         = ""
+  #     image_secret            = "${local.prefix}registry-secret"
+  #     run_env_variables       = local.env_vars
+  #     scale_min_instances     = 1
+  #     scale_max_instances     = 3
+  #     managed_domain_mappings = "local_public"
+  #   }
+  # }
 }
 
-##############################################################################
-# Code Engine Build
-##############################################################################
-
-module "code_engine_build" {
-  source                     = "terraform-ibm-modules/code-engine/ibm//modules/build"
-  version                    = "4.6.4"
-  name                       = "${local.prefix}ce-build"
-  ibmcloud_api_key           = var.ibmcloud_api_key
-  project_id                 = module.code_engine_project.id
-  existing_resource_group_id = module.resource_group.resource_group_id
-  source_type                = "git"
-  source_url                 = "https://github.com/IBM/ai-agent-for-loan-risk"
-  strategy_type              = local.strategy
-  output_secret              = module.code_engine_secret.name
-  output_image               = local.output_image
-  region                     = var.region
-}
-
-##############################################################################
-# Code Engine Application
-##############################################################################
 module "code_engine_app" {
-  # Added dependency on Code Engine Build as first Image is required for the application.
-  depends_on                    = [module.code_engine_build]
-  source                        = "terraform-ibm-modules/code-engine/ibm//modules/app"
-  version                       = "4.6.4"
-  project_id                    = module.code_engine_project.id
-  name                          = local.ce_app_name
-  image_reference               = module.code_engine_build.output_image
-  image_secret                  = module.code_engine_secret.name
-  run_env_variables             = local.env_vars
-  scale_cpu_limit               = "4"
-  scale_memory_limit            = "32G"
-  scale_ephemeral_storage_limit = "300M"
-  managed_domain_mappings       = "local_private"
+  # Added dependency on Code Engine as the Image is required for the application.
+  depends_on        = [module.code_engine]
+  source            = "terraform-ibm-modules/code-engine/ibm//modules/app"
+  version           = "4.6.4"
+  project_id        = module.code_engine.project_id
+  name              = local.ce_app_name
+  image_reference   = module.code_engine.build["output_image"]
+  image_secret      = module.code_engine.secret["name"]
+  run_env_variables = local.env_vars
 }
 
-##############################################################################################################
+
+# #############################################################################################################

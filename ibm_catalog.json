@@ -2,7 +2,7 @@
   "products": [
     {
       "label": "Landing zone for cloud-native AI applications",
-      "name": "Landing_zone_for_cloud_native_AI_applications",
+      "name": "Retrieval_Augmented_Generation_Pattern",
       "product_kind": "solution",
       "tags": [
         "solution",
@@ -93,6 +93,7 @@
           "label": "QuickStart",
           "name": "quickstart",
           "index": 1,
+          "short_description": "Ideal for users new to IBM Cloud or watsonx who want to get started without configuring underlying infrastructure.",
           "install_type": "fullstack",
           "working_directory": "solutions/quickstart",
           "iam_permissions": [
@@ -301,7 +302,8 @@
             }
           ],
           "dependency_version_2": true,
-          "terraform_version": "1.12.2"
+          "terraform_version": "1.12.2",
+          "ignore_readme": true
         }
       ]
     }
