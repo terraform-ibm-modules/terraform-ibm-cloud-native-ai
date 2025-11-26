@@ -169,11 +169,43 @@
             "features": [
               {
                 "title": " ",
-                "description": "Ideal for users new to IBM Cloud or watsonx.ai who want to get started without configuring underlying infrastructure."
+                "description": "Ideal for users new to IBM Cloud or watsonx.ai who want to get started without configuring underlying infrastructure. Enables:"
               },
               {
-                "title": " ",
-                "description": "Quickly provisions watsonx.ai, watsonx Assistant, watson Discovery, watsonx.data, watsonx.governance, Elasticsearch, Object Storage, Key Management Services and Code Engine. Includes all necessary services to deploy a sample Retrieval-Augmented Generation (RAG) application leveraging Code Engine."
+                "title": "1. watsonx.ai for model training, inferencing, and embeddings",
+                "description": "Quickly provisions watsonx.ai for building and running AI models."
+              },
+              {
+                "title": "2. watsonx Assistant / Orchestrate for conversational AI",
+                "description": "Provides orchestration and conversational flow for GenAI applications."
+              },
+              {
+                "title": "3. Watson Discovery for keyword search and document retrieval",
+                "description": "Supports indexing and retrieval of unstructured content."
+              },
+              {
+                "title": "4. watsonx.data",
+                "description": "Offers governed data lakehouse capabilities for AI workloads."
+              },
+              {
+                "title": "5. watsonx.governance",
+                "description": "Ensures responsible AI with governance and compliance features."
+              },
+              {
+                "title": "6. Elasticsearch Enterprise",
+                "description": "Enables building and storing dense vector indexes or keyword search indexes."
+              },
+              {
+                "title": "7. Object Storage",
+                "description": "Stores raw client data and processed artifacts."
+              },
+              {
+                "title": "8. Key Management Services",
+                "description": "Provides secure key handling for data and workloads."
+              },
+              {
+                "title": "9. Code Engine",
+                "description": "Supports containerized and serverless workloads; used to deploy sample RAG applications."
               }
             ],
             "diagrams": [
