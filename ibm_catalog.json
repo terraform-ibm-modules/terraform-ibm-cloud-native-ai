@@ -65,7 +65,7 @@
         {
           "label": "QuickStart",
           "name": "quickstart",
-          "index": 5,
+          "index": 1,
           "short_description": "Ideal for users new to IBM Cloud or watsonx who want to get started without configuring underlying infrastructure.",
           "install_type": "fullstack",
           "working_directory": "solutions/quickstart",
