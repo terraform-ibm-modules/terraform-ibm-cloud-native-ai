@@ -2,7 +2,6 @@ package tests
 
 import (
 	"log"
-	"math/rand"
 	"os"
 	"testing"
 
@@ -48,7 +47,7 @@ const quickStartDaTerraformDir = "solutions/quickstart"
 
 func setupQuickstartOptions(t *testing.T, prefix string) *testschematic.TestSchematicOptions {
 
-	var region = validQsRegions[rand.Intn(len(validQsRegions))]
+	var region = validQsRegions[common.CryptoIntn(len(validQsRegions))]
 	options := testschematic.TestSchematicOptionsDefault(&testschematic.TestSchematicOptions{
 		Testing:        t,
 		TemplateFolder: quickStartDaTerraformDir,
