@@ -49,7 +49,7 @@ module "resource_group" {
 
 module "cos" {
   source            = "terraform-ibm-modules/cos/ibm//modules/fscloud"
-  version           = "10.5.2"
+  version           = "10.6.1"
   resource_group_id = module.resource_group.resource_group_id
   cos_instance_name = "${local.prefix}cos"
   cos_plan          = "standard"
@@ -92,7 +92,7 @@ data "ibm_iam_auth_token" "restapi" {}
 
 module "watsonx_ai" {
   source            = "terraform-ibm-modules/watsonx-ai/ibm"
-  version           = "2.10.1"
+  version           = "2.10.2"
   region            = var.region
   resource_group_id = module.resource_group.resource_group_id
   resource_tags     = var.resource_tags
@@ -115,7 +115,7 @@ module "watsonx_ai" {
 
 module "watson_discovery" {
   source                = "terraform-ibm-modules/watsonx-discovery/ibm"
-  version               = "1.11.2"
+  version               = "1.11.6"
   region                = var.region
   resource_group_id     = module.resource_group.resource_group_id
   resource_tags         = var.resource_tags
@@ -130,7 +130,7 @@ module "watson_discovery" {
 
 module "watsonx_assistant" {
   source                 = "terraform-ibm-modules/watsonx-assistant/ibm"
-  version                = "1.5.2"
+  version                = "1.5.7"
   region                 = var.region
   resource_group_id      = module.resource_group.resource_group_id
   resource_tags          = var.resource_tags
@@ -191,12 +191,12 @@ module "watsonx_orchestrate" {
 
 module "icd_elasticsearch" {
   source                   = "terraform-ibm-modules/icd-elasticsearch/ibm"
-  version                  = "2.4.5"
+  version                  = "2.7.1"
   resource_group_id        = module.resource_group.resource_group_id
   name                     = "${local.prefix}data-store"
   region                   = var.region
   plan                     = "enterprise"
-  elasticsearch_version    = "8.15"
+  elasticsearch_version    = "9.1"
   tags                     = var.resource_tags
   service_endpoints        = "private"
   member_host_flavor       = "multitenant"
@@ -210,12 +210,12 @@ module "icd_elasticsearch" {
 
 module "icr_namespace" {
   source            = "terraform-ibm-modules/container-registry/ibm"
-  version           = "2.2.1"
+  version           = "2.3.5"
   resource_group_id = module.resource_group.resource_group_id
-  namespace_name    = "${local.prefix}namespace"
+  namespace_name    = local.cr_namespace
 }
 
-module "cr_endpoint" {
+module "icr_endpoint" {
   source  = "terraform-ibm-modules/container-registry/ibm//modules/endpoint"
   version = "2.3.5"
   region  = var.region
@@ -226,6 +226,12 @@ module "cr_endpoint" {
 ##############################################################################################################
 
 locals {
+
+  cr_namespace = "${local.prefix}namespace"
+
+  # These are the sample application specific environment variables.
+  # Please refer the sample application documentation to add/remove environment variables.
+  # Reference - https://github.com/IBM/ai-agent-for-loan-risk/blob/main/artifacts/deployment/deployment-README.md
   env_vars = [{
     type      = "secret_key_reference"
     name      = "WATSONX_AI_APIKEY"
@@ -245,7 +251,7 @@ locals {
     {
       type  = "literal"
       name  = "ENABLE_WXASST"
-      value = "true"
+      value = "false"
     },
     {
       type  = "literal"
@@ -255,7 +261,7 @@ locals {
     {
       type  = "literal"
       name  = "ENABLE_RAG_LLM"
-      value = "true"
+      value = "false"
     }
   ]
 
@@ -276,47 +282,44 @@ locals {
         data = {
           username = "iamapikey"
           password = var.ibmcloud_api_key
-          server   = module.cr_endpoint.container_registry_endpoint_private
+          server   = module.icr_endpoint.container_registry_endpoint_private
         }
       }
     }
   )
   source_url   = "https://github.com/IBM/ai-agent-for-loan-risk"
-  output_image = "${module.cr_endpoint.container_registry_endpoint_private}/${module.icr_namespace.namespace_name}/ai-agent-for-loan-risk"
-  strategy     = "dockerfile"
+  output_image = "${module.icr_endpoint.container_registry_endpoint_private}/${module.icr_namespace.namespace_name}/ai-agent-for-loan-risk"
   ce_app_name  = "ai-agent-for-loan-risk"
 }
 
 module "code_engine" {
   source            = "terraform-ibm-modules/code-engine/ibm"
-  version           = "4.6.11"
+  version           = "4.7.0"
   ibmcloud_api_key  = var.ibmcloud_api_key
   resource_group_id = module.resource_group.resource_group_id
   project_name      = "${local.prefix}project"
   secrets           = local.ce_secrets
-
   builds = {
     "${local.prefix}ce-build" = {
-      output_image  = local.output_image
-      output_secret = "${local.prefix}registry-secret"
-      source_url    = local.source_url
-      region        = var.region
-      strategy_type = local.strategy
+      source_url                   = local.source_url
+      container_registry_namespace = local.cr_namespace
+      prefix                       = var.prefix
+      region                       = var.region
     }
   }
 }
 
+##############################################################################
+# Code Engine Application
+##############################################################################
 module "code_engine_app" {
-  # Added dependency on Code Engine as the Image is required for the application.
-  depends_on        = [module.code_engine]
   source            = "terraform-ibm-modules/code-engine/ibm//modules/app"
-  version           = "4.6.11"
+  version           = "4.7.0"
   project_id        = module.code_engine.project_id
   name              = local.ce_app_name
   image_reference   = module.code_engine.build["${local.prefix}ce-build"].output_image
-  image_secret      = module.code_engine.secret["${local.prefix}registry-secret"].name
+  image_secret      = module.code_engine.secret["${local.prefix}registry-secret"].name #module.code_engine_secret.name
   run_env_variables = local.env_vars
 }
-
 
 # #############################################################################################################
