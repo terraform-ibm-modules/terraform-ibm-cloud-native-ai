@@ -211,7 +211,7 @@ module "code_engine_app" {
 }
 
 
-# Uncomment the following code if additional resources are needed. 
+# Uncomment the following code if additional resources are needed.
 # Note: the Quickstart variation does not support these resources by default but they can be enabled for extended usage.
 
 # locals {
