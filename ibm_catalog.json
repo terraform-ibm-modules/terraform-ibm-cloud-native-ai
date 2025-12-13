@@ -127,7 +127,7 @@
             "features": [
               {
                 "title": " ",
-                "description": "Ideal for users new to IBM Cloud or watsonx.ai who want to get started without configuring underlying infrastructure. Enables:"
+                "description": "Best for rapid experimentation with minimal setup and lightweight resources. Enables:"
               },
               {
                 "title": "1. watsonx.ai for model training, inferencing, and embeddings",
