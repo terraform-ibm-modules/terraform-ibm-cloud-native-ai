@@ -51,14 +51,6 @@ output "watsonx_ai" {
 }
 
 ########################################################################################################################
-# Container Registry
-########################################################################################################################
-output "icr_namespace_crn" {
-  description = "CRN representing the Container Registry namespace"
-  value       = module.icr_namespace.namespace_crn
-}
-
-########################################################################################################################
 # Code Engine
 ########################################################################################################################
 
@@ -67,7 +59,7 @@ output "code_engine" {
   value = {
     "project_id"   = module.code_engine.project_id
     "app_url"      = module.code_engine_app.endpoint
-    "output_image" = local.output_image
+    "output_image" = module.code_engine.build["${local.prefix}ce-build"].output_image
   }
 }
 

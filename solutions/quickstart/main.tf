@@ -7,9 +7,11 @@ locals {
   prefix = var.prefix != null ? trimspace(var.prefix) != "" ? "${var.prefix}-" : "" : ""
 
   # KMS
-  key_ring_name    = "${local.prefix}keyring"
-  key_name         = "${local.prefix}key"
-  wx_data_key_name = "${local.prefix}wxd-key"
+  key_ring_name = "${local.prefix}keyring"
+  key_name      = "${local.prefix}key"
+
+  # Uncomment if you would like to create a separate key for watsonx-data (if enabled)
+  # wx_data_key_name = "${local.prefix}wxd-key"
 
   watson_plan = {
     "studio"  = "professional-v1",
@@ -59,11 +61,12 @@ module "key_protect_all_inclusive" {
         {
           key_name     = local.key_name
           force_delete = true
-        },
-        {
-          key_name     = local.wx_data_key_name
-          force_delete = true
         }
+        # Uncomment if you would like to create key for watsonx.data (if enabled)
+        # ,{
+        #   key_name     = local.wx_data_key_name
+        #   force_delete = true
+        # }
       ]
     }
   ]
@@ -95,29 +98,10 @@ module "watsonx_ai" {
 }
 
 ##############################################################################################################
-# Container Registry
-##############################################################################################################
-
-module "icr_namespace" {
-  source            = "terraform-ibm-modules/container-registry/ibm"
-  version           = "2.3.5"
-  resource_group_id = module.resource_group.resource_group_id
-  namespace_name    = local.cr_namespace
-}
-
-module "icr_endpoint" {
-  source  = "terraform-ibm-modules/container-registry/ibm//modules/endpoint"
-  version = "2.3.5"
-  region  = var.region
-}
-
-##############################################################################################################
 # Code Engine
 ##############################################################################################################
 
 locals {
-
-  cr_namespace = "${local.prefix}namespace"
 
   # These are the sample application specific environment variables.
   # Please refer the sample application documentation to add/remove environment variables.
@@ -164,22 +148,10 @@ locals {
           "WATSONX_AI_APIKEY" = var.ibmcloud_api_key
         }
       }
-    },
-    # Secret for Container Registry
-    {
-      "${local.prefix}registry-secret" = {
-        format = "registry"
-        data = {
-          username = "iamapikey"
-          password = var.ibmcloud_api_key
-          server   = module.icr_endpoint.container_registry_endpoint_private
-        }
-      }
     }
   )
-  source_url   = "https://github.com/IBM/ai-agent-for-loan-risk"
-  output_image = "${module.icr_endpoint.container_registry_endpoint_private}/${module.icr_namespace.namespace_name}/ai-agent-for-loan-risk"
-  ce_app_name  = "ai-agent-for-loan-risk"
+  source_url  = "https://github.com/IBM/ai-agent-for-loan-risk"
+  ce_app_name = "ai-agent-for-loan-risk"
 }
 
 module "code_engine" {
@@ -192,7 +164,7 @@ module "code_engine" {
   builds = {
     "${local.prefix}ce-build" = {
       source_url                   = local.source_url
-      container_registry_namespace = local.cr_namespace
+      container_registry_namespace = "cnai"
       prefix                       = var.prefix
       region                       = var.region
     }
@@ -206,7 +178,7 @@ module "code_engine_app" {
   project_id        = module.code_engine.project_id
   name              = local.ce_app_name
   image_reference   = module.code_engine.build["${local.prefix}ce-build"].output_image
-  image_secret      = module.code_engine.secret["${local.prefix}registry-secret"].name
+  image_secret      = module.code_engine.build["${local.prefix}ce-build"].output_secret
   run_env_variables = local.env_vars
 }
 
