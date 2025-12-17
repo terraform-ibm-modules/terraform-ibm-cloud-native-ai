@@ -7,9 +7,5 @@ offerings:
     offering_id: 5fdd0045-30fc-4013-a8bc-6db9d5447a52
     variations:
       - name: quickstart # Quick start with sample application (Deploy on Code Engine)
-        mark_ready: false
+        mark_ready: true
         install_type: fullstack
-        scc:
-          instance_id: 1c7d5f78-9262-44c3-b779-b28fe4d88c37
-          region: us-south
-          scope_resource_group_var_name: existing_resource_group_name
