@@ -21,11 +21,12 @@ const resourceGroup = "geretain-test-resources"
 const terraformVersion = "terraform_v1.12.2" // This should match the version in the ibm_catalog.json
 var validQsRegions = []string{
 	"us-south",
-	"eu-de",
-	"eu-gb",
-	"jp-tok",
+	// Commented below regions : Refer Issue https://github.ibm.com/GoldenEye/issues/issues/17121
+	// "eu-de",
+	// "eu-gb",
+	// "jp-tok",
 
-	// Ignoring below regions as not supported for watsonx Assistant and watson Discovery
+	// Ignoring below regions as not supported for watsonx Assistant and watson Discovery if enabled
 	// "ca-tor",
 	// "us-east"
 	// In watsonx-data - the plan region combination requires no KMS, hence commenting au-syd region too.
