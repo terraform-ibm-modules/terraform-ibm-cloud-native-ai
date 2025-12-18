@@ -63,12 +63,14 @@ func setupQuickstartOptions(t *testing.T, prefix string) *testschematic.TestSche
 			List: []string{
 				"module.watsonx_ai.module.configure_user.null_resource.configure_user",
 				"module.watsonx_ai.module.configure_user.null_resource.restrict_access",
+				"module.code_engine_app.ibm_code_engine_app.ce_app",
 			},
 		},
 		IgnoreUpdates: testhelper.Exemptions{ // Ignore for consistency check
 			List: []string{
 				"module.watsonx_ai.module.configure_user.null_resource.configure_user",
 				"module.watsonx_ai.module.configure_user.null_resource.restrict_access",
+				"module.code_engine_app.ibm_code_engine_app.ce_app",
 			},
 		},
 		TerraformVersion: terraformVersion,
