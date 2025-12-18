@@ -63,14 +63,13 @@ func setupQuickstartOptions(t *testing.T, prefix string) *testschematic.TestSche
 			List: []string{
 				"module.watsonx_ai.module.configure_user.null_resource.configure_user",
 				"module.watsonx_ai.module.configure_user.null_resource.restrict_access",
-				"module.code_engine_app.ibm_code_engine_app.ce_app",
 			},
 		},
 		IgnoreUpdates: testhelper.Exemptions{ // Ignore for consistency check
 			List: []string{
 				"module.watsonx_ai.module.configure_user.null_resource.configure_user",
 				"module.watsonx_ai.module.configure_user.null_resource.restrict_access",
-				"module.code_engine_app.ibm_code_engine_app.ce_app",
+				"module.code_engine_app.ibm_code_engine_app.ce_app", // Added to resolve probe_liveness idempotency test failure —  Refer Issue - https://github.ibm.com/GoldenEye/issues/issues/17145
 			},
 		},
 		TerraformVersion: terraformVersion,
