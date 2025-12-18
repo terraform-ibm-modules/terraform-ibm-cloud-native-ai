@@ -78,7 +78,6 @@ func setupQuickstartOptions(t *testing.T, prefix string) *testschematic.TestSche
 		{Name: "ibmcloud_api_key", Value: options.RequiredEnvironmentVars["TF_VAR_ibmcloud_api_key"], DataType: "string", Secure: true},
 		{Name: "prefix", Value: options.Prefix, DataType: "string"},
 		{Name: "region", Value: options.Region, DataType: "string"},
-		{Name: "provider_visibility", Value: "private", DataType: "string"},
 		{Name: "existing_resource_group_name", Value: resourceGroup, DataType: "string"},
 	}
 
