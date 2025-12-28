@@ -36,7 +36,7 @@ module "resource_group" {
 
 module "cos" {
   source            = "terraform-ibm-modules/cos/ibm//modules/fscloud"
-  version           = "10.8.2"
+  version           = "10.8.3"
   resource_group_id = module.resource_group.resource_group_id
   cos_instance_name = "${local.prefix}cos"
   cos_plan          = "standard"
@@ -49,7 +49,7 @@ module "cos" {
 
 module "key_protect_all_inclusive" {
   source                      = "terraform-ibm-modules/kms-all-inclusive/ibm"
-  version                     = "5.5.14"
+  version                     = "5.5.15"
   resource_group_id           = module.resource_group.resource_group_id
   region                      = var.region
   key_protect_instance_name   = "${local.prefix}kp"
@@ -159,7 +159,7 @@ locals {
 
 module "code_engine" {
   source            = "terraform-ibm-modules/code-engine/ibm"
-  version           = "4.7.17"
+  version           = "4.7.18"
   ibmcloud_api_key  = var.ibmcloud_api_key
   resource_group_id = module.resource_group.resource_group_id
   project_name      = "${local.prefix}project"
@@ -177,7 +177,7 @@ module "code_engine" {
 # Deploy the sample app on code engine
 module "code_engine_app" {
   source            = "terraform-ibm-modules/code-engine/ibm//modules/app"
-  version           = "4.7.17"
+  version           = "4.7.18"
   project_id        = module.code_engine.project_id
   name              = local.ce_app_name
   image_reference   = module.code_engine.build["${local.prefix}ce-build"].output_image
