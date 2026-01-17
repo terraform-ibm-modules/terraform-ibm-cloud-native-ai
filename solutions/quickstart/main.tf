@@ -159,7 +159,7 @@ locals {
 
 module "code_engine" {
   source            = "terraform-ibm-modules/code-engine/ibm"
-  version           = "4.7.23"
+  version           = "4.7.24"
   ibmcloud_api_key  = var.ibmcloud_api_key
   resource_group_id = module.resource_group.resource_group_id
   project_name      = "${local.prefix}project"
@@ -177,7 +177,7 @@ module "code_engine" {
 # Deploy the sample app on code engine
 module "code_engine_app" {
   source            = "terraform-ibm-modules/code-engine/ibm//modules/app"
-  version           = "4.7.23"
+  version           = "4.7.24"
   project_id        = module.code_engine.project_id
   name              = local.ce_app_name
   image_reference   = module.code_engine.build["${local.prefix}ce-build"].output_image
