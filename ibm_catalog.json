@@ -69,7 +69,7 @@
           "short_description": "Ideal for users new to IBM Cloud or watsonx who want rapid experimentation with minimal setup and lightweight resources.",
           "install_type": "fullstack",
           "working_directory": "solutions/quickstart",
-          "release_notes_url": "https://github.com/terraform-ibm-modules/stack-ibm-retrieval-augmented-generation/releases",
+          "release_notes_url": "https://github.com/terraform-ibm-modules/terraform-ibm-cloud-native-ai/releases",
           "iam_permissions": [
             {
               "service_name": "Resource group only",
