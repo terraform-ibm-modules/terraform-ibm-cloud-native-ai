@@ -36,7 +36,7 @@ module "resource_group" {
 
 module "cos" {
   source            = "terraform-ibm-modules/cos/ibm//modules/fscloud"
-  version           = "10.9.2"
+  version           = "10.9.3"
   resource_group_id = module.resource_group.resource_group_id
   cos_instance_name = "${local.prefix}cos"
   cos_plan          = "standard"
@@ -49,7 +49,7 @@ module "cos" {
 
 module "key_protect_all_inclusive" {
   source                      = "terraform-ibm-modules/kms-all-inclusive/ibm"
-  version                     = "5.5.23"
+  version                     = "5.5.24"
   resource_group_id           = module.resource_group.resource_group_id
   region                      = var.region
   key_protect_instance_name   = "${local.prefix}kp"
@@ -83,7 +83,7 @@ data "ibm_iam_auth_token" "restapi" {}
 
 module "watsonx_ai" {
   source            = "terraform-ibm-modules/watsonx-ai/ibm"
-  version           = "2.14.2"
+  version           = "2.14.3"
   region            = var.region
   resource_group_id = module.resource_group.resource_group_id
   resource_tags     = var.resource_tags
