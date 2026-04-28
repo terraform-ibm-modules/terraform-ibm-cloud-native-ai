@@ -26,7 +26,7 @@ locals {
 
 module "resource_group" {
   source                       = "terraform-ibm-modules/resource-group/ibm"
-  version                      = "1.5.0"
+  version                      = "1.6.0"
   existing_resource_group_name = var.existing_resource_group_name
 }
 
@@ -36,11 +36,11 @@ module "resource_group" {
 
 module "cos" {
   source            = "terraform-ibm-modules/cos/ibm//modules/fscloud"
-  version           = "10.14.9"
+  version           = "10.16.0"
   resource_group_id = module.resource_group.resource_group_id
   cos_instance_name = "${local.prefix}cos"
   cos_plan          = "standard"
-  cos_tags          = var.resource_tags
+  resource_tags     = var.resource_tags
 }
 
 ##############################################################################
@@ -49,7 +49,7 @@ module "cos" {
 
 module "key_protect_all_inclusive" {
   source                      = "terraform-ibm-modules/kms-all-inclusive/ibm"
-  version                     = "5.5.36"
+  version                     = "5.6.1"
   resource_group_id           = module.resource_group.resource_group_id
   region                      = var.region
   key_protect_instance_name   = "${local.prefix}kp"
@@ -83,7 +83,7 @@ data "ibm_iam_auth_token" "restapi" {}
 
 module "watsonx_ai" {
   source            = "terraform-ibm-modules/watsonx-ai/ibm"
-  version           = "2.16.2"
+  version           = "2.17.1"
   region            = var.region
   resource_group_id = module.resource_group.resource_group_id
   resource_tags     = var.resource_tags
@@ -159,7 +159,7 @@ locals {
 
 module "code_engine" {
   source            = "terraform-ibm-modules/code-engine/ibm"
-  version           = "4.8.3"
+  version           = "4.9.1"
   ibmcloud_api_key  = var.ibmcloud_api_key
   resource_group_id = module.resource_group.resource_group_id
   project_name      = "${local.prefix}project"
@@ -177,7 +177,7 @@ module "code_engine" {
 # Deploy the sample app on code engine
 module "code_engine_app" {
   source            = "terraform-ibm-modules/code-engine/ibm//modules/app"
-  version           = "4.8.3"
+  version           = "4.9.1"
   project_id        = module.code_engine.project_id
   name              = local.ce_app_name
   image_reference   = module.code_engine.build["${local.prefix}ce-build"].output_image
