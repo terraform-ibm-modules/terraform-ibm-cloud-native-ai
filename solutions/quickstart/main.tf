@@ -218,21 +218,6 @@ module "code_engine_app" {
 # }
 
 # ##############################################################################################################
-# # watsonx Assistant
-# ##############################################################################################################
-
-# module "watsonx_assistant" {
-#   source                 = "terraform-ibm-modules/watsonx-assistant/ibm"
-#   version                = "1.5.7"
-#   region                 = var.region
-#   resource_group_id      = module.resource_group.resource_group_id
-#   resource_tags          = var.resource_tags
-#   plan                   = "enterprise"
-#   watsonx_assistant_name = "${local.prefix}assistant"
-#   service_endpoints      = local.service_endpoints
-# }
-
-# ##############################################################################################################
 # # watsonx.governance
 # ##############################################################################################################
 
