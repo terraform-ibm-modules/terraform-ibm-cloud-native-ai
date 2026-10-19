@@ -1,6 +1,7 @@
 package tests
 
 import (
+	"fmt"
 	"log"
 	"os"
 	"testing"
@@ -57,22 +58,26 @@ func setupQuickstartOptions(t *testing.T, prefix string) *testschematic.TestSche
 		TarIncludePatterns: []string{
 			quickStartDaTerraformDir + "/*.tf",
 		},
-
-		IgnoreDestroys: testhelper.Exemptions{ // Ignore for consistency check
-			List: []string{
-				"module.watsonx_ai.module.configure_user.null_resource.configure_user",
-				"module.watsonx_ai.module.configure_user.null_resource.restrict_access",
-			},
-		},
-		IgnoreUpdates: testhelper.Exemptions{ // Ignore for consistency check
-			List: []string{
-				"module.watsonx_ai.module.configure_user.null_resource.configure_user",
-				"module.watsonx_ai.module.configure_user.null_resource.restrict_access",
-				"module.code_engine_app.ibm_code_engine_app.ce_app", // Added to resolve probe_liveness idempotency test failure —  Refer Issue - https://github.ibm.com/GoldenEye/issues/issues/17145
-			},
-		},
 		TerraformVersion: terraformVersion,
 	})
+
+	options.IgnoreDestroys = testhelper.Exemptions{ // Ignore for consistency and upgrade checks
+		List: []string{
+			"module.watsonx_ai.module.configure_user.terraform_data.install_required_binaries[0]",
+			"module.watsonx_ai.module.configure_user.terraform_data.configure_user",
+			"module.watsonx_ai.module.configure_user.terraform_data.restrict_access",
+			fmt.Sprintf("module.code_engine.module.build[\"%s-ce-build\"].terraform_data.install_required_binaries[0]", options.Prefix),
+		},
+	}
+	options.IgnoreUpdates = testhelper.Exemptions{ // Ignore for consistency and upgrade checks
+		List: []string{
+			"module.watsonx_ai.module.configure_user.terraform_data.install_required_binaries[0]",
+			"module.watsonx_ai.module.configure_user.terraform_data.configure_user",
+			"module.watsonx_ai.module.configure_user.terraform_data.restrict_access",
+			fmt.Sprintf("module.code_engine.module.build[\"%s-ce-build\"].terraform_data.install_required_binaries[0]", options.Prefix),
+			"module.code_engine_app.ibm_code_engine_app.ce_app", // Added to resolve probe_liveness idempotency test failure —  Refer Issue - https://github.ibm.com/GoldenEye/issues/issues/17145
+		},
+	}
 
 	options.TerraformVars = []testschematic.TestSchematicTerraformVar{
 		{Name: "ibmcloud_api_key", Value: options.RequiredEnvironmentVars["TF_VAR_ibmcloud_api_key"], DataType: "string", Secure: true},
