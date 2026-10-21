@@ -82,22 +82,6 @@ output "code_engine" {
 # }
 
 # ########################################################################################################################
-# # watsonx Assistant
-# ########################################################################################################################
-
-# output "watsonx_assistant" {
-#   description = "Connection and configuration details for the watsonx Assistant instance."
-#   value = {
-#     "crn"           = module.watsonx_assistant.crn
-#     "account_id"    = module.watsonx_assistant.account_id
-#     "guid"          = module.watsonx_assistant.guid
-#     "name"          = module.watsonx_assistant.name
-#     "plan_id"       = module.watsonx_assistant.plan_id
-#     "dashboard_url" = module.watsonx_assistant.dashboard_url
-#   }
-# }
-
-# ########################################################################################################################
 # # watsonx.governance
 # ########################################################################################################################
 

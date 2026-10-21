@@ -26,9 +26,10 @@ var validQsRegions = []string{
 	"eu-gb",
 	"jp-tok",
 
-	// Ignoring below regions as not supported for watsonx Assistant and watson Discovery if enabled
+	// Ignoring below region as not supported for watson Discovery if enabled
 	// "ca-tor",
-	// "us-east"
+	// Ignoring below region as not supported for watsonx.ai if enabled
+	// "us-east",
 	// In watsonx-data - the plan region combination requires no KMS, hence commenting au-syd region too.
 	// "au-syd",
 }
